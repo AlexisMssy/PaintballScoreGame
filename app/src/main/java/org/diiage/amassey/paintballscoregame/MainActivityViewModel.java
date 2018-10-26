@@ -43,6 +43,8 @@ public class MainActivityViewModel extends AndroidViewModel {
 
         //userRepository = new UserRepository(database);
         mancheRepository = new MancheRepository(database);
+
+        //manches = mancheRepository.getAll();
 /*
         manches = Transformations.switchMap(listeManches, manche ->{
             if (manche != null) {
@@ -50,7 +52,8 @@ public class MainActivityViewModel extends AndroidViewModel {
             }
             return null;
         });
-
+        */
+/*
         hello = Transformations.map(helloNumber, integer->{
             if (integer != null) {
                 return "Hello " + integer;
@@ -77,8 +80,10 @@ public class MainActivityViewModel extends AndroidViewModel {
         return hello;
     }
 
+    //Appel Repository
     public LiveData<List<Manche>> getManches() {
-        return manches;
+        return mancheRepository.getAll();
+        //return manches;
     }
 
     public void startTimer(){

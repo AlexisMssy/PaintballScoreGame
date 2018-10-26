@@ -33,15 +33,13 @@ public class MainActivity extends FragmentActivity {
         MainActivityViewModel viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
-        LiveData<List<Manche>> mans = viewModel.getManches();
+
+        //Appel ViewModel
+        LiveData<List<Manche>> manches = viewModel.getManches();
 
         binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
 
-        viewModel.getManches().observe(this, manche -> {
-//            Log.d("LIVE",manche.get(1).getDate().toString());
-            Log.d("LIVE","string");
-        });
 
         //listeManches = viewModel.getManches();
 

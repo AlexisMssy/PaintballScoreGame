@@ -13,13 +13,13 @@ import java.util.List;
 @Dao
 public interface MancheDao {
 
-    @Query("SELECT * FROM `manche`")
+    @Query("SELECT * FROM Manche")
     LiveData<List<Manche>> getAll();
 
-    @Query("SELECT * FROM `manche` WHERE id = :id")
+    @Query("SELECT * FROM `Manche` WHERE id = :id")
     LiveData<Manche> get(long id);
 
-    @Query("SELECT * FROM `match` WHERE mancheId = :id")
+    @Query("SELECT * FROM `Match` WHERE mancheId = :id")
     LiveData<Match> getMatchsOfManche(long id);
 
     @Insert

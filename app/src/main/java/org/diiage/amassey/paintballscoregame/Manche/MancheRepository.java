@@ -3,12 +3,14 @@ package org.diiage.amassey.paintballscoregame.Manche;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.os.AsyncTask;
 
 import org.diiage.amassey.paintballscoregame.AppDatabase;
 
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 
 public class MancheRepository {
     AppDatabase db;
@@ -47,6 +49,7 @@ public class MancheRepository {
     }
 
     // TODO : ici exemple !
+    /*
     public LiveData<List<Manche>> getAll() {
         MediatorLiveData<List<Manche>> manches = new MediatorLiveData<>();
 
@@ -65,12 +68,18 @@ public class MancheRepository {
 
         return manches;
     }
-
+*/
     public LiveData<List<Manche>> getAllOnline() {
         MediatorLiveData<Manche> manche = new MediatorLiveData<>();
 
         //TODO : call api method
 
         return null;
+    }
+
+    public LiveData<List<Manche>> getAll(){
+        //Appel dao
+        //return db.mancheDao().getAll();
+        return db.mancheDao().getAll();
     }
 }
