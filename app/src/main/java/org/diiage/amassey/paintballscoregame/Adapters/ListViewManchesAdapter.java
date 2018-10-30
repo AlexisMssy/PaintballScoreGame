@@ -5,66 +5,75 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.diiage.amassey.paintballscoregame.Manche.Manche;
 import org.diiage.amassey.paintballscoregame.R;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class ListViewManchesAdapter extends RecyclerView.Adapter<ListViewManchesAdapter.MyViewHolder> {
+public class ListViewManchesAdapter extends BaseAdapter {
 
-    private List<Manche> dataListeManches;
+    private List<Manche> data;
     Context context;
+    ListView lv;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public ListViewManchesAdapter(List<Manche> data, Context context) {
         super();
         this.context = context;
-        dataListeManches = data;
+        this.data = data;
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // create a new view
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.listview_rowmanche, parent, false);
-
-        // TextView v = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_listmatch, parent, false);
-
-        MyViewHolder vh = new MyViewHolder(view);
-        return vh;
+    public int getCount() {
+        return data.size();
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        final Manche manche = dataListeManches.get(position);
-        holder.idManche.setText(String.valueOf(manche.getId()));
-        holder.numeroManche.setText(String.valueOf(manche.getNumero()));
-        holder.dateManche.setText(String.valueOf(manche.getDate()));
+    public Manche getItem(int i) {
+        return data.get(i);
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        private final TextView idManche;
-        private final TextView numeroManche;
-        private final TextView dateManche;
+    @Override
+    public long getItemId(int i) {
+        return i;
+    }
 
-        public MyViewHolder(final View itemView) {
-            super(itemView);
-            idManche = itemView.findViewById(R.id.item_id);
-            numeroManche = itemView.findViewById(R.id.item_numero);
-            dateManche = itemView.findViewById(R.id.item_date);
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        MyViewHolder holder = null;
+
+        if(view == null)
+        {
+            view = LayoutInflater.from(this.context).inflate(R.layout.listview_rowmanche, viewGroup, false);
         }
+        holder = new MyViewHolder(view);
+        Manche manche = getItem(i);
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+        holder.idManche.setText(String.valueOf(manche.getId()));
+        holder.dateManche.setText(String.valueOf(df.format(manche.getDate())));
+        holder.numeroManche.setText(String.valueOf(manche.getNumero()));
+
+        return view;
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
-    @Override
-    public int getItemCount() {
-        return dataListeManches.size();
-    }
+}
 
+class MyViewHolder {
+    // each data item is just a string in this case
+    public final TextView idManche;
+    public final TextView numeroManche;
+    public final TextView dateManche;
+
+    public MyViewHolder(final View itemView) {
+        idManche = itemView.findViewById(R.id.item_id);
+        numeroManche = itemView.findViewById(R.id.item_numero);
+        dateManche = itemView.findViewById(R.id.item_date);
+    }
 }

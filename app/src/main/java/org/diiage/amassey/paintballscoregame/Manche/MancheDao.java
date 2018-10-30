@@ -20,7 +20,7 @@ public interface MancheDao {
     LiveData<Manche> get(long id);
 
     @Query("SELECT * FROM `Match` WHERE mancheId = :id")
-    LiveData<Match> getMatchsOfManche(long id);
+    LiveData<List<Match>> getMatchsOfManche(long id);
 
     @Insert
     void insertAll(List<Manche> manches);

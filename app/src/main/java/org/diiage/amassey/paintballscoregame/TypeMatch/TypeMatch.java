@@ -3,6 +3,14 @@ package org.diiage.amassey.paintballscoregame.TypeMatch;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import org.diiage.amassey.paintballscoregame.Equipe.Equipe;
+import org.diiage.amassey.paintballscoregame.Match.Match;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 @Entity(tableName = "TypeMatch")
 public class TypeMatch {
     @PrimaryKey(autoGenerate = true)
@@ -12,7 +20,12 @@ public class TypeMatch {
     private long nombreJoueurs;
     private long duree;
 
-    public TypeMatch() {
+    public TypeMatch(long id, String nom, long pointGagnant, long nombreJoueurs, long duree) {
+        this.id = id;
+        this.nom = nom;
+        this.pointGagnant = pointGagnant;
+        this.nombreJoueurs = nombreJoueurs;
+        this.duree = duree;
     }
 
     public long getId() {
@@ -55,4 +68,12 @@ public class TypeMatch {
         this.duree = duree;
     }
 
+    public static List<TypeMatch> populateData() {
+        List<TypeMatch> typematchs = new ArrayList<>();
+        typematchs.add(new TypeMatch(1, "D2", 4, 6, 3));
+        typematchs.add(new TypeMatch(2, "D3", 1, 8, 5));
+        typematchs.add(new TypeMatch(3, "D4", 1, 6, 3));
+
+        return typematchs;
+    }
 }

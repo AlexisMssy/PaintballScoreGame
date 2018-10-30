@@ -9,6 +9,7 @@ import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import org.diiage.amassey.paintballscoregame.Equipe.Equipe;
 import org.diiage.amassey.paintballscoregame.Equipe.EquipeDao;
@@ -41,19 +42,22 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     private static AppDatabase buildDatabase(final Application application) {
-        return Room.databaseBuilder(application, AppDatabase.class, DATABASE_NAME).build();
-//            .addCallback(new RoomDatabase.Callback() {
-//                @Override
-//                public void onCreate(@NonNull SupportSQLiteDatabase db) {
-//                    super.onCreate(db);
-//                    Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            getInstance(context).mancheDao().insertAll(Manche.populateData());
-//                        }
-//                    });
-//                }
-//            })
-//            .build();
+        return Room.databaseBuilder(application, AppDatabase.class, DATABASE_NAME)
+            .addCallback(new RoomDatabase.Callback() {
+                @Override
+                public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                    super.onCreate(db);
+                    Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            getInstance(application).typeMatchDao().insertAll(TypeMatch.populateData());
+                            getInstance(application).equipeDao().insertAll(Equipe.populateData());
+                            getInstance(application).mancheDao().insertAll(Manche.populateData());
+                            getInstance(application).matchDao().insertAll(Match.populateData());
+                        }
+                    });
+                }
+            })
+            .build();
     }
 }

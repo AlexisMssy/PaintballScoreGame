@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 
 import org.diiage.amassey.paintballscoregame.AppDatabase;
+import org.diiage.amassey.paintballscoregame.Match.Match;
 
 import java.util.List;
 import java.util.Timer;
@@ -81,5 +82,11 @@ public class MancheRepository {
         //Appel dao
         //return db.mancheDao().getAll();
         return db.mancheDao().getAll();
+    }
+
+    public LiveData<List<Match>> getMatchsOfManche(long mancheId){
+        //Appel dao
+        //return db.mancheDao().getAll();
+        return db.mancheDao().getMatchsOfManche(mancheId);
     }
 }

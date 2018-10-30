@@ -1,29 +1,26 @@
 package org.diiage.amassey.paintballscoregame;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
+import org.diiage.amassey.paintballscoregame.Adapters.ListViewManchesAdapter;
 import org.diiage.amassey.paintballscoregame.Manche.Manche;
 import org.diiage.amassey.paintballscoregame.databinding.ActivityMainBinding;
 
 import java.util.List;
 
 public class MainActivity extends FragmentActivity {
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     public List<Manche> listeManches;
-
+    ListViewManchesAdapter customAdapter;
+    ListView lvManches;
     private ActivityMainBinding binding;
 
     @Override
@@ -33,32 +30,27 @@ public class MainActivity extends FragmentActivity {
         MainActivityViewModel viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
+        lvManches = (ListView) findViewById(R.id.listView);
+
+        lvManches.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, MatchActivity.class);
+                intent.putExtra("mancheId",0);
+                startActivity(intent);
+            }
+        });
 
         //Appel ViewModel
-        LiveData<List<Manche>> manches = viewModel.getManches();
+        viewModel.getManches().observe(this, new Observer<List<Manche>>() {
+            @Override
+            public void onChanged(@Nullable List<Manche> manches) {
+                listeManches = manches;
+                customAdapter = new ListViewManchesAdapter(listeManches, getApplicationContext());
+                lvManches.setAdapter(customAdapter);
+            }
+        });
 
         binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
-
-
-        //listeManches = viewModel.getManches();
-
-
-
-        /*
-        mRecyclerView = findViewById(R.id.rv_listematch);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // specify an adapter (see also next example)
-        mAdapter = new AdapterMatch(this, listGT);
-        mRecyclerView.setAdapter(mAdapter);
-*/
     }
 }
